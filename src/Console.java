@@ -1,7 +1,7 @@
 import java.sql.*;
 import java.util.Scanner;
 
-import static java.nio.file.Files.delete;
+
 
 public class Console {
     public static void main(String[] args) {
@@ -66,7 +66,7 @@ public class Console {
 
 
 
-    // G och VG delar. Visa recept undermeny
+    // Visa recept undermeny
     private static void visaReceptSubMenu() {
         while (true) {
             System.out.println("""
@@ -161,7 +161,7 @@ public class Console {
 
             //  kolumnerna med justerat format
             System.out.printf("%-10s %-30s %-6s%n", "ReceptId", "ReceptNamn", "Rating");
-            // loop through the result set
+
             while (rs.next()) {
                 // Formaterad för varje rad
                 System.out.printf("%-10d %-30s %-6d%n",
@@ -331,7 +331,7 @@ public class Console {
                     Hantera ingredienser undermeny\s
                     1. Lägg till en ingrediens\s
                     2. Uppdatera en ingrediens\s
-                    3. Radera en ingrediens\s 
+                    3. Radera en ingrediens\s  
                     4. Återvänd till huvudmeny\s
                     """
             );
@@ -452,18 +452,19 @@ public class Console {
        String sql = "SELECT * FROM recept WHERE receptNamn LIKE ?";
 
        try (Connection conn = connect();
-            PreparedStatement pstmt  = conn.prepareStatement(sql)) {
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
            pstmt.setString(1, "%" + receptAttHitta + "%");
 
            ResultSet rs = pstmt.executeQuery();
 
-           // kolumnerna
-           System.out.println("ReceptId \tReceptNamn \tRating");
-           // loop through the result set
+           // Formaterade kolumner
+           System.out.printf("%-10s %-30s %-6s%n", "ReceptId", "ReceptNamn", "Rating");
+
            while (rs.next()) {
-               System.out.println(rs.getInt("receptId") + "\t" +
-                       rs.getString("receptNamn") + "\t" +
+               System.out.printf("%-10d %-30s %-6d%n",
+                       rs.getInt("receptId"),
+                       rs.getString("receptNamn"),
                        rs.getInt("receptRating"));
            }
        } catch (SQLException e) {
@@ -473,7 +474,8 @@ public class Console {
 
 
 
-   // visa statistic submenu. WORK ON PROGRESS
+
+    // visa statistic submenu.
     private static void visaStatistikSubMenu() {
         while(true){
             System.out.println("""
